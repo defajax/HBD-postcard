@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff8ed">
+  <title>Подарок для тебя</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --cream: #fff8ed;
+      --paper: #fffdf8;
+      --ink: #3d382e;
+      --muted: #857c6c;
+      --green: #526f49;
+      --green-light: #e6eddc;
+      --orange: #ee9b35;
+      --orange-light: #fff0d4;
+      --line: #eee5d6;
+      font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px 18px;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 11% 12%, rgba(240, 195, 111, .18), transparent 28%),
+        radial-gradient(ellipse at 90% 87%, rgba(122, 153, 104, .16), transparent 31%),
+        var(--cream);
+    }
+
+    .page {
+      width: min(100%, 760px);
+      position: relative;
+      padding: clamp(25px, 5vw, 48px);
+      overflow: hidden;
+      border: 1px solid rgba(221, 207, 183, .8);
+      border-radius: 30px;
+      background: rgba(255, 253, 248, .89);
+      box-shadow: 0 24px 70px rgba(83, 67, 43, .11);
+      text-align: center;
+    }
+
+    .page::before,
+    .page::after {
+      content: "✦";
+      position: absolute;
+      color: #e5b96f;
+      font-size: 19px;
+      opacity: .58;
+      pointer-events: none;
+    }
+    .page::before { left: 7%; top: 8%; }
+    .page::after { right: 8%; bottom: 9%; font-size: 14px; }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .19em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(31px, 6vw, 48px);
+      font-weight: 500;
+      letter-spacing: -.035em;
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      max-width: 460px;
+      min-height: 48px;
+      margin: 13px auto 20px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .progress {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 0 auto 18px;
+    }
+
+    .progress span {
+      width: 7px;
+      height: 7px;
+      border-radius: 10px;
+      background: #e8e0d3;
+      transition: width .3s ease, background .3s ease;
+    }
+
+    .progress span.active {
+      width: 24px;
+      background: var(--green);
+    }
+
+    .stage {
+      position: relative;
+      min-height: 290px;
+      display: grid;
+      place-items: center;
+      padding: 8px 0 17px;
+    }
+
+    .panel {
+      width: 100%;
+      animation: appear .55s cubic-bezier(.2, .8, .2, 1) both;
+    }
+    .panel[hidden] { display: none; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(15px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .gift-button {
+      display: block;
+      margin: 4px auto 0;
+      padding: 0;
+      border: 0;
+      color: inherit;
+      background: transparent;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .gift-button:focus-visible,
+    .action:focus-visible {
+      outline: 3px solid #7c995e;
+      outline-offset: 5px;
+    }
+
+    .gift {
+      width: 244px;
+      height: 246px;
+      position: relative;
+      transition: transform .25s ease;
+    }
+    .gift-button:hover .gift { transform: translateY(-5px) rotate(-1deg); }
+
+    .gift-handle {
+      position: absolute;
+      z-index: 1;
+      top: 2px;
+      left: 61px;
+      width: 122px;
+      height: 83px;
+      border: 9px solid #789263;
+      border-bottom: 0;
+      border-radius: 70px 70px 0 0;
+      transition: transform .55s ease, opacity .4s ease;
+    }
+
+    .gift-body {
+      position: absolute;
+      z-index: 2;
+      left: 16px;
+      top: 64px;
+      width: 212px;
+      height: 170px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      clip-path: polygon(8% 0, 92% 0, 100% 100%, 0 100%);
+      border-radius: 4px 4px 16px 16px;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.24), transparent 24%, transparent 76%, rgba(145,85,25,.08)),
+        linear-gradient(145deg, #f6be61, #e99b37);
+      box-shadow: 0 19px 28px rgba(137, 93, 39, .2);
+      transition: transform .65s cubic-bezier(.2, .8, .2, 1), opacity .45s ease;
+    }
+
+    .gift-body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 34px;
+      height: 100%;
+      transform: translateX(-50%);
+      background: rgba(255, 245, 214, .56);
+    }
+
+    .gift-body::after {
+      content: "для тебя";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 26px;
+      color: #6b542e;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 21px;
+      font-style: italic;
+      transform: rotate(-2deg);
+    }
+
+    .gift-bow {
+      position: absolute;
+      z-index: 3;
+      left: 50%;
+      top: 47px;
+      width: 79px;
+      height: 47px;
+      transform: translateX(-50%);
+      transition: transform .45s ease, opacity .3s ease;
+    }
+
+    .gift-bow::before,
+    .gift-bow::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      width: 37px;
+      height: 30px;
+      border: 7px solid #f8e5b0;
+      border-radius: 60% 55% 45% 55%;
+    }
+    .gift-bow::before { left: 0; transform: rotate(26deg); }
+    .gift-bow::after { right: 0; transform: rotate(-26deg); }
+    .gift-bow i {
+      position: absolute;
+      z-index: 1;
+      top: 13px;
+      left: 32px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #f8e5b0;
+    }
+
+    .gift.is-open .gift-body {
+      transform: perspective(550px) rotateX(62deg) translateY(-36px);
+      opacity: .12;
+    }
+    .gift.is-open .gift-handle { transform: translateY(-58px) rotate(-13deg); opacity: .18; }
+    .gift.is-open .gift-bow { transform: translate(-50%, -40px) rotate(24deg); opacity: 0; }
+
+    .tap-hint {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 9px;
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 650;
+    }
+    .tap-hint span { animation: nudge 1.35s ease-in-out infinite; }
+    @keyframes nudge { 50% { transform: translateY(4px); } }
+
+    .fruit-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: clamp(0px, 2vw, 12px);
+      align-items: end;
+      width: min(100%, 570px);
+      margin: 0 auto;
+    }
+
+    .fruit {
+      width: 100%;
+      height: clamp(95px, 20vw, 160px);
+      object-fit: contain;
+      filter: drop-shadow(0 9px 8px rgba(92, 74, 42, .13));
+      animation: pop .65s cubic-bezier(.18, .8, .24, 1.2) both;
+    }
+    .fruit:nth-child(2) { animation-delay: .08s; transform: rotate(-9deg); }
+    .fruit:nth-child(3) { animation-delay: .16s; transform: translateY(-11px); }
+    .fruit:nth-child(4) { animation-delay: .24s; transform: rotate(8deg); }
+    .fruit:nth-child(5) { animation-delay: .32s; }
+    @keyframes pop {
+      from { opacity: 0; translate: 0 28px; scale: .7; }
+      to { opacity: 1; translate: 0 0; scale: 1; }
+    }
+
+    .hands {
+      display: block;
+      width: min(100%, 290px);
+      height: 235px;
+      margin: 0 auto;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 12px rgba(76, 62, 45, .12));
+      animation: appear .65s cubic-bezier(.2, .8, .2, 1) both;
+    }
+
+    .birthday {
+      position: relative;
+      padding: 26px 18px 18px;
+      animation: appear .6s cubic-bezier(.2, .8, .2, 1) both;
+    }
+    .birthday .sparkle {
+      color: var(--orange);
+      font-size: 39px;
+      line-height: 1;
+    }
+    .birthday h2 {
+      margin: 12px auto 13px;
+      color: var(--green);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(40px, 8vw, 68px);
+      font-weight: 500;
+      letter-spacing: -.045em;
+      line-height: 1.02;
+    }
+    .birthday p {
+      max-width: 410px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+    .confetti {
+      position: absolute;
+      top: 2px;
+      left: 50%;
+      width: 8px;
+      height: 12px;
+      border-radius: 3px;
+      opacity: 0;
+      pointer-events: none;
+      animation: confetti 1.5s ease-out forwards;
+    }
+    @keyframes confetti {
+      0% { opacity: 0; transform: translate(0, 0) rotate(0); }
+      15% { opacity: 1; }
+      100% { opacity: 0; transform: translate(var(--x), var(--y)) rotate(520deg); }
+    }
+
+    .action {
+      min-height: 48px;
+      min-width: 196px;
+      padding: 12px 23px;
+      border: 0;
+      border-radius: 999px;
+      color: white;
+      background: var(--green);
+      box-shadow: 0 7px 16px rgba(70, 100, 58, .2);
+      font: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+    .action:hover {
+      transform: translateY(-2px);
+      background: #425f3a;
+      box-shadow: 0 9px 20px rgba(70, 100, 58, .25);
+    }
+
+    .footer-note {
+      margin: 18px 0 0;
+      color: #aaa08e;
+      font-size: 12px;
+      letter-spacing: .04em;
+    }
+
+    @media (max-width: 520px) {
+      .page { border-radius: 24px; }
+      .stage { min-height: 255px; }
+      .gift { transform: scale(.9); margin: -12px 0; }
+      .gift-button:hover .gift { transform: scale(.9) translateY(-4px) rotate(-1deg); }
+      .fruit { height: 96px; }
+      .hands { height: 205px; width: min(100%, 250px); }
+      .subtitle { font-size: 15px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">маленький сюрприз</p>
+    <h1 id="heading">Для тебя приготовили подарок</h1>
+    <p class="subtitle" id="subtitle">Нажми на пакетик — внутри несколько тёплых пожеланий.</p>
+
+    <div class="progress" aria-label="Шаги сюрприза">
+      <span class="active"></span><span></span><span></span>
+    </div>
+
+    <section class="stage" aria-live="polite">
+      <div class="panel" id="gift-panel">
+        <button class="gift-button" id="open-gift" type="button" aria-label="Открыть подарочный пакет">
+          <div class="gift" id="gift">
+            <div class="gift-handle"></div>
+            <div class="gift-body"></div>
+            <div class="gift-bow"><i></i></div>
+          </div>
+          <span class="tap-hint">открыть подарок <span aria-hidden="true">↓</span></span>
+        </button>
+      </div>
+
+      <div class="panel" id="pomelo-panel" hidden>
+        <div class="fruit-row" aria-label="Пять помело">
+          <img class="fruit" src="assets/pomelo.png" alt="Помело" />
+          <img class="fruit" src="assets/pomelo.png" alt="Помело" />
+          <img class="fruit" src="assets/pomelo.png" alt="Помело" />
+          <img class="fruit" src="assets/pomelo.png" alt="Помело" />
+          <img class="fruit" src="assets/pomelo.png" alt="Помело" />
+        </div>
+      </div>
+
+      <div class="panel" id="hands-panel" hidden>
+        <img class="hands" src="assets/hands-salt.png" alt="Ладони, бережно держащие соль" />
+      </div>
+
+      <div class="panel" id="birthday-panel" hidden>
+        <div class="birthday" id="birthday">
+          <div class="sparkle" aria-hidden="true">✦</div>
+          <h2>С днём<br>рождения!</h2>
+          <p>Пусть каждый день приносит радость, тепло и побольше поводов улыбаться.</p>
+        </div>
+      </div>
+    </section>
+
+    <button class="action" id="next" type="button" hidden>Дальше</button>
+    <p class="footer-note">сделано с теплом и щепоткой волшебства</p>
+  </main>
+
+  <script>
+    const panels = [
+      document.getElementById("gift-panel"),
+      document.getElementById("pomelo-panel"),
+      document.getElementById("hands-panel"),
+      document.getElementById("birthday-panel")
+    ];
+    const heading = document.getElementById("heading");
+    const subtitle = document.getElementById("subtitle");
+    const next = document.getElementById("next");
+    const gift = document.getElementById("gift");
+    const openGift = document.getElementById("open-gift");
+    const dots = [...document.querySelectorAll(".progress span")];
+    let step = 0;
+
+    const copy = [
+      ["Для тебя приготовили подарок", "Нажми на пакетик — внутри несколько тёплых пожеланий."],
+      ["Немного солнца внутри", "Пять маленьких помело — чтобы день был ярким и сладким."],
+      ["И щепотка волшебства", "Пусть всё задуманное получается легко и с удовольствием."],
+      ["Сегодня твой день!", "Пусть впереди будет много счастливых моментов."]
+    ];
+
+    function showStep(nextStep) {
+      step = nextStep;
+      panels.forEach((panel, index) => { panel.hidden = index !== step; });
+      heading.textContent = copy[step][0];
+      subtitle.textContent = copy[step][1];
+      dots.forEach((dot, index) => dot.classList.toggle("active", index === Math.min(step, 2)));
+      next.hidden = step === 0;
+      next.textContent = step === 3 ? "Посмотреть ещё раз" : (step === 2 ? "И последнее…" : "Дальше");
+      if (step === 3) tossConfetti();
+    }
+
+    openGift.addEventListener("click", () => {
+      gift.classList.add("is-open");
+      openGift.disabled = true;
+      window.setTimeout(() => showStep(1), 380);
+    });
+
+    next.addEventListener("click", () => {
+      if (step === 3) {
+        gift.classList.remove("is-open");
+        openGift.disabled = false;
+        showStep(0);
+      } else {
+        showStep(step + 1);
+      }
+    });
+
+    function tossConfetti() {
+      const box = document.getElementById("birthday");
+      box.querySelectorAll(".confetti").forEach(piece => piece.remove());
+      const colors = ["#e99b37", "#789263", "#f2c96d", "#d77f6b", "#91aa77"];
+      for (let i = 0; i < 28; i += 1) {
+        const piece = document.createElement("i");
+        piece.className = "confetti";
+        piece.style.background = colors[i % colors.length];
+        piece.style.setProperty("--x", (Math.random() * 460 - 230) + "px");
+        piece.style.setProperty("--y", (Math.random() * 190 + 90) + "px");
+        piece.style.animationDelay = (Math.random() * .22) + "s";
+        box.appendChild(piece);
+      }
+    }
+  </script>
+</body>
+</html>
