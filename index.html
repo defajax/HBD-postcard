@@ -385,9 +385,146 @@
       }
     }
   </style>
+  <style>
+    /* Пёстрый олдскульный интернет в духе 2009 года */
+    :root {
+      --cream: #fff1fb;
+      --paper: #fffdf7;
+      --ink: #3b1767;
+      --muted: #694786;
+      --green: #008b94;
+      --green-light: #d8fffb;
+      --orange: #ff168c;
+      --orange-light: #fff36b;
+      --line: #f42aad;
+      font-family: Tahoma, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #88f3ff;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.9) 1.4px, transparent 2px),
+        repeating-linear-gradient(135deg, rgba(255, 0, 170, .12) 0 7px, transparent 7px 15px),
+        linear-gradient(135deg, #89edff 0%, #ffe4fa 52%, #fff27b 100%);
+      background-size: 23px 23px, auto, auto;
+    }
+
+    .page {
+      border: 5px ridge #f340b3;
+      border-radius: 12px;
+      background: linear-gradient(145deg, rgba(255,255,255,.97), rgba(255,248,255,.96));
+      box-shadow: 0 0 0 5px #fff36b, 0 13px 0 rgba(159, 61, 152, .22), 0 28px 65px rgba(55, 29, 91, .2);
+    }
+
+    .page::before { content: "★"; color: #ff36b6; font-size: 27px; text-shadow: 2px 2px #fff36b; }
+    .page::after { content: "✿"; color: #00aeb3; font-size: 23px; text-shadow: 2px 2px #fff36b; }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 6px 13px;
+      border: 2px dotted #ff168c;
+      border-radius: 4px;
+      color: #ed0785;
+      background: #fff76d;
+      letter-spacing: .14em;
+      text-shadow: 1px 1px #fff;
+    }
+
+    h1 {
+      color: #6726aa;
+      font-family: "Trebuchet MS", Tahoma, sans-serif;
+      font-weight: 800;
+      letter-spacing: -.04em;
+      text-shadow: 2px 2px 0 #fff36b, 4px 4px 0 #ff8bd5;
+    }
+
+    .subtitle { color: #583878; font-weight: 600; }
+
+    .ticker {
+      width: min(100%, 570px);
+      overflow: hidden;
+      margin: 0 auto 13px;
+      padding: 7px 0;
+      border: 3px ridge #ff56bd;
+      background: #fff45e;
+      color: #e9008c;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .1em;
+      white-space: nowrap;
+    }
+
+    .ticker span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: ticker-scroll 18s linear infinite;
+    }
+
+    @keyframes ticker-scroll { to { transform: translateX(-100%); } }
+
+    .progress span { border: 1px solid #d9a4c9; background: #ffe0f6; }
+    .progress span.active { background: #ff168c; }
+
+    .gift-handle { border-color: #00aeb3; }
+    .gift-body {
+      border: 3px ridge #ffdf49;
+      background:
+        repeating-linear-gradient(45deg, rgba(255,255,255,.17) 0 8px, transparent 8px 16px),
+        linear-gradient(135deg, #ff4db7, #fa168e 55%, #c525c7);
+      box-shadow: 0 10px 0 #a52092, 0 18px 28px rgba(137, 39, 115, .25);
+    }
+    .gift-body::before { background: rgba(255, 242, 102, .76); }
+    .gift-body::after {
+      color: #622271;
+      font-family: "Trebuchet MS", Tahoma, sans-serif;
+      font-weight: 900;
+      text-shadow: 1px 1px #fff36b;
+    }
+    .gift-bow::before, .gift-bow::after { border-color: #fff36b; }
+    .gift-bow i { background: #fff36b; }
+
+    .fruit { filter: drop-shadow(0 7px 0 rgba(210, 92, 157, .2)) drop-shadow(0 0 9px rgba(255, 223, 45, .4)); }
+    .hands { filter: drop-shadow(0 8px 0 rgba(210, 92, 157, .2)) drop-shadow(0 0 8px rgba(255, 223, 45, .4)); }
+
+    .birthday h2 {
+      color: #f20c92;
+      font-family: "Trebuchet MS", Tahoma, sans-serif;
+      font-weight: 900;
+      text-shadow: 3px 3px 0 #fff36b, 6px 6px 0 #73eaf2;
+    }
+    .birthday .sparkle { color: #ff168c; text-shadow: 2px 2px #fff36b; }
+
+    .action {
+      border: 3px outset #fff05a;
+      border-radius: 10px;
+      color: #511c75;
+      background: linear-gradient(#fff979, #ffb534);
+      box-shadow: 0 5px 0 #ba49a1, 0 8px 13px rgba(90, 44, 103, .2);
+      text-shadow: 1px 1px rgba(255,255,255,.8);
+    }
+    .action:hover {
+      background: linear-gradient(#fffba1, #ff83ce);
+      box-shadow: 0 5px 0 #ba49a1, 0 10px 17px rgba(90, 44, 103, .25);
+    }
+
+    .footer-note {
+      display: inline-block;
+      padding: 6px 10px;
+      border: 2px dotted #00aeb3;
+      background: #e4ffff;
+      color: #75508c;
+      font-weight: 700;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticker span { animation: none; padding-left: 0; }
+    }
+  </style>
 </head>
 <body>
   <main class="page">
+    <div class="ticker" aria-label="Поздравительная бегущая строка"><span>★ СЕГОДНЯ ТВОЙ ДЕНЬ ★ ПОМЕЛО И СЮРПРИЗЫ ★ С ДНЁМ РОЖДЕНИЯ ★ УРААА! ★</span></div>
     <p class="eyebrow">маленький сюрприз</p>
     <h1 id="heading">Для тебя приготовили подарок</h1>
     <p class="subtitle" id="subtitle">Нажми на пакетик — внутри несколько тёплых пожеланий.</p>
